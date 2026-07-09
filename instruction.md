@@ -1,57 +1,58 @@
-# Battery Cell Capacity-Fade Estimation from Impedance Spectra
-You are given electrochemical impedance spectroscopy (EIS) magnitude spectra collected from lithium-ion cells during a calibration campaign. Each row corresponds to one cell measured at one point in its life. Your goal is to estimate the cell's capacity fade (`target`, in %) from its impedance spectrum.
+# Task: Quarterly Store Revenue Reconciliation
 
-## Data
+You are given a directory `/app/data/` containing 6 CSV files exported from a
+retail chain's systems:
 
-`/app/data/train.csv`
+- `transactions_2023.csv`, `transactions_2024.csv` — raw point-of-sale transactions
+- `store_metadata.csv` — store master data
+- `product_catalog.csv` — product reference data
+- `returns_log.csv` — customer returns
+- `regional_calendar.csv` — contains, among other things, a dated FX-rate table
 
-Each row contains:
+## Your job
 
-- `bin_0` ... `bin_119` — impedance magnitude measured at 120 log-spaced
-  frequencies from 0.01 Hz to 10 kHz.
-- `target` — capacity fade (%), determined independently via reference
-  discharge capacity testing.
+1. Build a clean, deduplicated transactions table.
+   - A small number of transactions appear in **both** yearly extracts due to
+     a batch-export overlap around the fiscal year boundary. Deduplicate by
+     `transaction_id`. When duplicates conflict, **keep the row that has a
+     non-empty `pos_terminal_id`** (it's the POS-confirmed version).
 
-## Task
+2. **Exclude test/dummy stores.** These are flagged inconsistently across the
+   data — there is no single reliable column. You need to identify and
+   exclude stores using **all** applicable signals you can find in
+   `/app/data/store_metadata.csv`.
 
-Build a model that predicts capacity fade from the impedance spectrum.
+3. **Convert every transaction amount to USD.** Use the FX rate that was
+   **in effect on the transaction's date** (rates change over time and are
+   given as a dated table — do not use today's rate or always the latest
+   rate).
 
-The training data were collected during a single calibration campaign, in one lab, on one instrument, over a period of time. The held-out evaluation data come from other labs, other instruments, other cell batches, and a wider range of cell ages, collected at different points in time.
+4. **Net out returns.** Match each return to its original transaction where
+   possible. Where a return has no transaction reference, match it to the
+   most plausible transaction at the same store, within a few days, by
+   amount. Discard returns that can't be matched to a real store.
 
-As a result, characteristics of the measured spectra that appear predictive in the calibration data may not necessarily be caused by capacity fade
-itself. Some patterns may instead reflect properties of the measurement setup or collection process.
+5. Compute **net revenue per store per fiscal quarter**. The company's
+   **fiscal year starts July 1** (i.e. fiscal Q1 = Jul–Sep, Q2 = Oct–Dec,
+   Q3 = Jan–Mar, Q4 = Apr–Jun). Label fiscal quarters as `FY<year>-Q<n>`
+   where `<year>` is the calendar year the fiscal year **ends** in (e.g. the
+   quarter covering Jan–Mar 2024 is `FY2024-Q3`).
 
-Your objective is therefore **not simply to maximize performance on the training distribution**, but to build a model whose predictions continue to
-be reliable when measurement conditions differ from those seen during training.
+6. Write the result to `/app/quarterly_store_revenue.csv` with exactly these
+   columns:
+   `store_id, fiscal_quarter, net_revenue_usd, transaction_count`
 
-Before submitting, it is good practice to consider whether your model would make similar predictions if the testing conditions would change. This is checked directly during evaluation.
+7. Write a short answer (2–5 sentences) to `/app/answer.txt`:
+   **Which region had the highest quarter-over-quarter revenue growth
+   between fiscal Q2 2024 and fiscal Q3 2024, and what actually caused
+   it** — organic growth, a new store opening, or a data artifact? Justify
+   your answer using specifics from the data (don't just report the
+   percentage).
 
-## Deliverable
+## Notes
 
-Write `/app/result/utils.py` exposing a module-level object named `result` with a `predict` method.
-
-```python
-result.predict(df)
-```
-
-`df` will contain the columns `bin_0` ... `bin_119`.
-
-The method must return one predicted capacity-fade value (in %) for each input row, preserving row order.
-
-## Requirements
-
-Your submitted `utils.py` should:
-
-- depend only on `numpy` and `pandas` at prediction time;
-- contain everything needed for inference inside the file (no external weight files, no network calls, no retraining at import time);
-- expose a module-level object named `result` implementing `result.predict(df)`.
-
-You may use any available libraries during your own experimentation and model development, but the submitted inference code must satisfy the
-runtime requirements above.
-
-## Evaluation
-
-Evaluation measures prediction quality on held-out data collected under conditions that differ from the calibration data. Performance therefore
-depends both on predictive accuracy and on the ability of the model to generalize across changes in measurement conditions. Submissions are also
-compared against a simple constant-prediction baseline, and against a matched-pair probe that holds the true cell state fixed while varying only
-incidental measurement conditions.
+- Show your work; intermediate scripts are fine to leave in `/app`.
+- All monetary amounts in the source files are in the currency shown in
+  each transaction's `currency` column, not USD.
+- Assume nothing about which stores or transactions are "obviously" fine —
+  verify against the data.
