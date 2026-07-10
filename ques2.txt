@@ -1,0 +1,58 @@
+# Objective
+Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B), answer the following.
+
+# Task
+a = India's Land Area (in crores of acres)
+b = India's Percentage of total Land Area which is used for Arable Farming
+c = World's Land Area (in crores of acres)
+d = World's Percentage of total Land Area which is used for Arable Farming
+
+Using a, b, c, and d, calculate India's total arable farm land (in crores of acres) as a percentage of the World's total arable farm land.
+
+# Output Formatting & Constraints
+* Format: Output a strictly valid JSON object inside a markdown code block.
+* Required Keys: Return the JSON using EXACTLY the following four keys:
+  - "Final_Answer" (Number): The definitive numeric value of the percentage, strictly rounded to two decimal places.
+  - "Evidence_Text" (String): A concise synthesis specifying the exact source locations — document, page, row, and column — for each data point retrieved.
+  - "Derivation" (String): The explicit step-by-step methodology used to compute the final result.
+  - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, PDF_Page_Number]]. The page number MUST be the page's physical position within the PDF file (counting the first page of the file as page 1), NOT any page number printed on the page itself, which may differ from the file position due to front matter, scan artifacts, or missing pages.
+* Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
+
+
+{
+  "Final_Answer": 11.91,
+  "Evidence_Text": "India's Land Area = 81 crores of acres, India's Percentage of total Land Area used for Arable Farming = 43. World's Land Area = 3,251 crores of acres, World's Percentage of total Land Area used for Arable Farming = 9.",
+  "Derivation": "Step 1 — India's arable farm land = a × (b/100) = 81 × 0.43 = 34.83 crores of acres. Step 2 — World's arable farm land = c × (d/100) = 3,251 × 0.09 = 292.59 crores of acres. Step 3 — India's share of world arable land = (34.83 / 292.59) × 100 = 11.9066%. Step 4 — Round to two decimals: 11.91.",
+  "Reference": [["CensusIndia1951AllIndiaPartIb.pdf", 81]]
+}
+
+{
+  "criterion 1": {
+    "description": "Final answer is exactly 11.91.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 2": {
+    "description": "Extracts a = 81 (India, Land Area, in crores of acres).",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 3": {
+    "description": "Extracts b = 43 (India, Percentage of total Land Area used for Arable Farming) — not 67 (topographically usable %) and not 65 (% of usable area used for arable farming).",
+    "criterion_type": ["Table Understanding", "Extraction (recall)"]
+  },
+  "criterion 4": {
+    "description": "Extracts c = 3,251 (World, Land Area, in crores of acres).",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 5": {
+    "description": "Extracts d = 9 (World, Percentage of total Land Area used for Arable Farming) — not 8 (Irrigation Percentage) and not 14 (an adjacent row's value).",
+    "criterion_type": ["Table Understanding", "Extraction (recall)"]
+  },
+  "criterion 6": {
+    "description": "Computes absolute arable land (Land Area × Percentage/100) for both India and World before taking the ratio — does not directly divide b by d (43/9) as a shortcut.",
+    "criterion_type": ["Reasoning", "Math"]
+  },
+  "criterion 7": {
+    "description": "Reference array includes the PDF's physical page number (81), not any page number printed on the scanned page itself.",
+    "criterion_type": ["Instruction Following"]
+  }
+}
