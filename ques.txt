@@ -1,0 +1,18 @@
+# Objective
+Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B) document, answer the following.
+
+# Task
+Find:
+a = The total land area of the North India zone (in acres)
+b = The gross area sown to all crops (in thousand acres) for the North India zone
+
+Using a and b, calculate what percentage of North India's total land area was under cultivation (gross sown area) in 1951.
+
+# Output Formatting & Constraints
+* Format: Output a strictly valid JSON object inside a markdown code block.
+* Required Keys: Return the JSON using EXACTLY the following four keys:
+  - "Final_Answer" (Number): The definitive, precise numeric value of the percentage, strictly rounded to two decimal places.
+  - "Evidence_Text" (String): A concise synthesis of the query's context. This must specify the exact source locations—document, table, and specific row/column—where each data point was retrieved.
+  - "Derivation" (String): The explicit step-by-step mathematical methodology used to compute the final result, including any unit conversion.
+  - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, Table_Name], [Document_Name, Table_Name]].
+* Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
