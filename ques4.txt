@@ -1,0 +1,52 @@
+# Objective
+Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B), answer the following.
+
+# Task
+Which zone/state has the highest proportion of self-supporting persons in its population? Compute that proportion as a percentage of its total population, rounded to two decimal places.
+
+# Output Formatting & Constraints
+* Format: Output a strictly valid JSON object inside a markdown code block.
+* Required Keys: Return the JSON using EXACTLY the following four keys:
+  - "Final_Answer" (Number): The definitive numeric value of the percentage for the identified entry, strictly rounded to two decimal places.
+  - "Evidence_Text" (String): A concise synthesis specifying the identified entry's name and the exact source locations, document, page, row, and column, for both values retrieved.
+  - "Derivation" (String): The explicit step-by-step methodology used to identify the entry and compute the final result.
+  - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, PDF_Page_Number]]. The page number MUST be the page's physical position within the PDF file (counting the first page of the file as page 1), NOT any page number printed on the page itself.
+* Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
+
+{
+  "Final_Answer": 37.06,
+  "Evidence_Text": "Rajasthan has the highest self-supporting persons proportion among all individual entries. Total population (1951 Census) = 15,290,797. Self-supporting Persons absolute count = 5,665,469.",
+  "Derivation": "Step 1, compare the self-supporting persons rate across every individual entry, excluding only the India-wide total. Step 2, Rajasthan's rate is the highest, ahead of Ajmer (36.59 percent) and Bhopal (35.66 percent). Step 3, verify: 5,665,469 divided by 15,290,797, multiplied by 100, equals 37.0567 percent. Step 4, round to two decimal places: 37.06.",
+  "Reference": [["52737_1951_APP.pdf", 259], ["52737_1951_APP.pdf", 260]]
+}
+
+{
+  "criterion 1": {
+    "description": "Final answer is exactly 37.06.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 2": {
+    "description": "Correctly identifies Rajasthan as the entry with the highest self-supporting persons percentage, not a broader aggregate entry such as North-West India that groups multiple other entries underneath it, and not a close competitor such as Ajmer, Bhopal, Coorg, or Himachal Pradesh and Bilaspur.",
+    "criterion_type": ["Reasoning"]
+  },
+  "criterion 3": {
+    "description": "Excludes only the India-wide total from the comparison, and correctly reasons about which remaining entries are aggregates of other listed entries versus which are not, without relying on a rigid state-versus-zone label to decide inclusion.",
+    "criterion_type": ["Instruction Following", "Reasoning"]
+  },
+  "criterion 4": {
+    "description": "Extracts Rajasthan's total population (1951 Census) = 15,290,797.",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 5": {
+    "description": "Extracts Rajasthan's self-supporting persons absolute count = 5,665,469.",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 6": {
+    "description": "Computes percentage as (self-supporting persons count divided by total population) multiplied by 100, correctly rounding to two decimal places.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 7": {
+    "description": "Reference array includes the PDF's physical page number, not the printed page number visible on the scanned page.",
+    "criterion_type": ["Instruction Following"]
+  }
+}
