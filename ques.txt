@@ -16,3 +16,42 @@ Using a and b, calculate what percentage of North India's total land area was un
   - "Derivation" (String): The explicit step-by-step mathematical methodology used to compute the final result, including any unit conversion.
   - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, Table_Name], [Document_Name, Table_Name]].
 * Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
+
+
+{
+  "Final_Answer": 67.25,
+  "Evidence_Text": "From the Census of India 1951, Volume I, Part I-B (Appendices to the Census Report), Table 1.0 (Classification of land by topographically usable area, population and average annual rainfall; unit note: 'ALL AREA FIGURES ARE IN ACRES'), zone summary section, North India zone Total Land Area = 72,596,673 acres. Table 1.3 (Cropping Pattern; unit note: 'In thousand of acres'), 'ALL CROPS' column, North India zone row = 48,820 (thousand acres) = 48,820,000 acres.",
+  "Derivation": "Step 1 — (a) From Table 1.0, North India total land area = 72,596,673 acres. Step 2 — (b) From Table 1.3, North India gross area sown to all crops = 48,820 thousand acres; convert: 48,820 × 1,000 = 48,820,000 acres. Step 3 — (b/a) × 100 = (48,820,000 / 72,596,673) × 100 = 67.2483%. Step 4 — Round to two decimal places: 67.25.",
+  "Reference": [["CensusIndia1951AllIndiaPartIb.pdf", 36, "Table 1.0"], ["CensusIndia1951AllIndiaPartIb.pdf", 43, "Table 1.3"]]
+}
+
+{
+  "criterion 1": {
+    "description": "Final answer is exactly 67.25 (percentage, two decimals, no % sign).",
+    "sources": ["CensusIndia1951AllIndiaPartIb.pdf, page 36, Table 1.0, North India row", "CensusIndia1951AllIndiaPartIb.pdf, page 20, Table 1.3, ALL CROPS column, North India row"],
+    "justification": "(48,820,000 / 72,596,673) × 100 = 67.25. Any other value indicates a wrong source figure or math error.",
+    "weight": "Primary",
+    "criterion_type": ["Math", "Extraction (recall)"]
+  },
+  "criterion 2": {
+    "description": "Correctly extracts North India total land area = 72,596,673 acres from Table 1.0's zone summary — not the near-identical Uttar Pradesh state-level figure (72,596,672) or the per-capita column.",
+    "sources": ["CensusIndia1951AllIndiaPartIb.pdf, page 36, Table 1.0"],
+    "justification": "North India = Uttar Pradesh, so state-level and zone-level tables carry near-duplicate figures; using the wrong one is a common extraction error.",
+    "weight": "Primary",
+    "criterion_type": ["Table Understanding", "Extraction (recall)"]
+  },
+  "criterion 3": {
+    "description": "Correctly extracts the ALL CROPS total (48,820) from Table 1.3 — not the foodgrains sub-total (42,630), rice (8,239), wheat (8,393), or net sown area (39,300, from Table 1.2).",
+    "sources": ["CensusIndia1951AllIndiaPartIb.pdf, page 43, Table 1.3"],
+    "justification": "Multiple similarly-scaled columns/tables exist for North India; picking the wrong one yields a plausible but incorrect answer (e.g. 58.72% or 54.13%).",
+    "weight": "Primary",
+    "criterion_type": ["Table Understanding", "Extraction (recall)"]
+  },
+  "criterion 4": {
+    "description": "Applies the ×1,000 unit conversion (Table 1.0 is in acres, Table 1.3 is in thousand acres) before dividing.",
+    "sources": ["Table 1.0 header: 'ALL AREA FIGURES ARE IN ACRES'", "Table 1.3 annexure header: 'In thousand of acres'"],
+    "justification": "Skipping the conversion understates the answer by 1000× (0.0672% instead of 67.25%) — the most common failure mode.",
+    "weight": "Primary",
+    "criterion_type": ["Reasoning", "Math"]
+  }
+}
