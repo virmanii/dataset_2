@@ -14,38 +14,46 @@ Which zone/state has the highest proportion of self-supporting persons in its po
 * Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
 
 {
-  "Final_Answer": 37.06,
-  "Evidence_Text": "Rajasthan has the highest self-supporting persons proportion among all individual entries. Total population (1951 Census) = 15,290,797. Self-supporting Persons absolute count = 5,665,469.",
-  "Derivation": "Step 1, compare the self-supporting persons rate across every individual entry, excluding only the India-wide total. Step 2, Rajasthan's rate is the highest, ahead of Ajmer (36.59 percent) and Bhopal (35.66 percent). Step 3, verify: 5,665,469 divided by 15,290,797, multiplied by 100, equals 37.0567 percent. Step 4, round to two decimal places: 37.06.",
-  "Reference": [["52737_1951_APP.pdf", 259], ["52737_1951_APP.pdf", 260]]
+  "Final_Answer": 6.88,
+  "Evidence_Text": "Comparing only individual States and Territories (excluding the six Zone subtotal rows and the India total, since Zone totals are sums of the states within them), Uttar Pradesh has the highest Self-supporting Persons in 1951 (19,259,510) and Sikkim has the lowest (33,222). For 1931, Uttar Pradesh's Principal Earners = 20,718,172 and Sikkim's = 71,344.",
+  "Derivation": "Step 1, restrict the comparison to leaf-level State and Territory entries only, excluding all Zone subtotal rows since each Zone total is the sum of the states beneath it. Step 2, 1951 difference = 19,259,510 minus 33,222 = 19,226,288. Step 3, 1931 difference = 20,718,172 minus 71,344 = 20,646,828. Step 4, percentage change = (19,226,288 minus 20,646,828) divided by 20,646,828, multiplied by 100 = negative 6.8808 percent. Step 5, absolute value, rounded to two decimal places: 6.88.",
+  "Reference": [["CensusIndia1951AllIndiaPartIB.pdf", 241], ["CensusIndia1951AllIndiaPartIB.pdf", 248]]
 }
 
 {
   "criterion 1": {
-    "description": "Final answer is exactly 37.06.",
+    "description": "Final answer is exactly 6.88.",
     "criterion_type": ["Math"]
   },
   "criterion 2": {
-    "description": "Correctly identifies Rajasthan as the entry with the highest self-supporting persons percentage, not a broader aggregate entry such as North-West India that groups multiple other entries underneath it, and not a close competitor such as Ajmer, Bhopal, Coorg, or Himachal Pradesh and Bilaspur.",
-    "criterion_type": ["Reasoning"]
+    "description": "Excludes all six Zone subtotal rows (North India, East India, South India, West India, Central India, North-West India) from the comparison, recognizing that a Zone total is the sum of the individual states listed beneath it and therefore cannot be fairly compared against any one of those states as an independent entity.",
+    "criterion_type": ["Reasoning", "Table Understanding"]
   },
   "criterion 3": {
-    "description": "Excludes only the India-wide total from the comparison, and correctly reasons about which remaining entries are aggregates of other listed entries versus which are not, without relying on a rigid state-versus-zone label to decide inclusion.",
-    "criterion_type": ["Instruction Following", "Reasoning"]
+    "description": "Correctly identifies Uttar Pradesh, not North India, as the correct label for the highest entry, since North India and Uttar Pradesh represent the identical underlying figures in this table, and Uttar Pradesh is the leaf-level entry while North India is the Zone-level duplicate of it.",
+    "criterion_type": ["Table Understanding", "Reasoning"]
   },
   "criterion 4": {
-    "description": "Extracts Rajasthan's total population (1951 Census) = 15,290,797.",
-    "criterion_type": ["Extraction (recall)"]
+    "description": "Correctly identifies Sikkim as the lowest entry among individual States and Territories, and does not select Chandernagore, which lacks comparable 1931 data and cannot be validly used in a question requiring both years.",
+    "criterion_type": ["Reasoning", "Table Understanding"]
   },
   "criterion 5": {
-    "description": "Extracts Rajasthan's self-supporting persons absolute count = 5,665,469.",
+    "description": "Extracts Uttar Pradesh's Self-supporting Persons (1951) = 19,259,510 and Sikkim's = 33,222.",
     "criterion_type": ["Extraction (recall)"]
   },
   "criterion 6": {
-    "description": "Computes percentage as (self-supporting persons count divided by total population) multiplied by 100, correctly rounding to two decimal places.",
-    "criterion_type": ["Math"]
+    "description": "Extracts Uttar Pradesh's Principal Earners (1931) = 20,718,172 and Sikkim's = 71,344.",
+    "criterion_type": ["Extraction (recall)"]
   },
   "criterion 7": {
+    "description": "Computes the 1951 difference (19,226,288) and 1931 difference (20,646,828) using the same pair of entities in both years.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 8": {
+    "description": "Computes percentage change as (1951 difference minus 1931 difference) divided by the 1931 difference, multiplied by 100, reports the absolute value, and rounds to two decimal places.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 9": {
     "description": "Reference array includes the PDF's physical page number, not the printed page number visible on the scanned page.",
     "criterion_type": ["Instruction Following"]
   }
