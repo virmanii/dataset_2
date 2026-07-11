@@ -1,0 +1,53 @@
+# Objective
+Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B), answer the following.
+
+# Task
+Across all the individual Divisions listed, what is the lowest rainfall (in inches) per 1000 acres of total area that any Division gets? Identify that Division and compute its Average Annual Rainfall divided by its Total Area, rounded to six decimal places.
+
+# Output Formatting & Constraints
+* Format: Output a strictly valid JSON object inside a markdown code block.
+* Required Keys: Return the JSON using EXACTLY the following four keys:
+  - "Final_Answer" (Number): The definitive numeric value of rainfall-per-1,000-acres for the identified Division, strictly rounded to six decimal places.
+  - "Evidence_Text" (String): A concise synthesis specifying the identified Division's name and the exact source locations, document, page, row, and column, for both values retrieved.
+  - "Derivation" (String): The explicit step-by-step methodology used to identify the Division and compute the final result.
+  - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, PDF_Page_Number]]. The page number MUST be the page's physical position within the PDF file (counting the first page of the file as page 1), NOT any page number printed on the page itself.
+* Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
+
+
+{
+  "Final_Answer": 0.000228,
+  "Evidence_Text": "Comparing Average Annual Rainfall against Total Area across all Division level rows in Population and Land Use Table 1.1, the lowest ratio belongs to Rajasthan Dry Area Division, with Average Annual Rainfall = 11 inches and Total Area = 48,212 ('000 acres).",
+  "Derivation": "Step 1, for every Division row (excluding Region and Sub-Region subtotal rows, and excluding rows where rainfall is marked N.A.), compute rainfall divided by area. Step 2, the minimum value belongs to Rajasthan Dry Area Division: 11 / 48,212 = 0.00022812. Step 3, round to six decimal places: 0.000228.",
+  "Reference": [["CensusIndia1951AllIndiaPartIb.pdf", 23]]
+}
+
+{
+  "criterion 1": {
+    "description": "Final answer is exactly 0.000228.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 2": {
+    "description": "Correctly identifies Rajasthan Dry Area Division as the Division with the lowest rainfall per area ratio.",
+    "criterion_type": ["Table Understanding", "Reasoning"]
+  },
+  "criterion 3": {
+    "description": "Distinguishes Division level rows from Region level and Sub-Region level subtotal rows in the table's nested hierarchy, and compares only across Divisions rather than including broader aggregates like 'INDIA' or 'The Desert Sub-Region'.",
+    "criterion_type": ["Table Understanding", "Reasoning"]
+  },
+  "criterion 4": {
+    "description": "Extracts the correct Average Annual Rainfall value (11 inches) and Total Area value (48,212 '000 acres) specifically for the identified Division's own row, not its parent Sub-Region's row.",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 5": {
+    "description": "Computes the ratio as rainfall divided by area, not the inverted ratio (area divided by rainfall).",
+    "criterion_type": ["Reasoning", "Math"]
+  },
+  "criterion 6": {
+    "description": "Correctly excludes the row with an 'N.A.' rainfall value (Himachal Pradesh and Bilaspur Division) from consideration rather than treating N.A. as zero, which would otherwise be misidentified as the minimum.",
+    "criterion_type": ["Reasoning", "Instruction Following"]
+  },
+  "criterion 7": {
+    "description": "Reference array includes the PDF's physical page number, not the page number printed on the scanned page.",
+    "criterion_type": ["Instruction Following"]
+  }
+}
