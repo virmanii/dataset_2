@@ -1,0 +1,19 @@
+## Per-artifact ratings
+
+- **1st — Gemini Pro 3.1 (base):** Invents facts confidently, ignores a stated restriction. **3-4/10**
+- **2nd — Gemini Pro 3.1 + DI:** Stops inventing, but overcorrects to "safe" over "correct." Silently changes its own logic. **5.5/10**
+- **3rd — Claude Opus 4.8:** Best writing quality, but a factual claim is simply wrong. Repeats the same restriction violation. **6/10**
+- **4th — Gemini Pro 3.1 + skill.md:** Best overall — flags ambiguity openly, recommendations finally match requirements. One fine-grained detail still off. **7/10**
+
+## Loss analysis
+
+- Worst failure (confident fabrication) fixed after first correction, never recurred
+- Subtler failure (safe-but-wrong over correct-but-harder) emerged next, needed a standing checklist to fix, not a one-off correction
+- Fine-grained precision stayed imperfect even in the best version
+- One specific rule was never followed correctly, regardless of correction method
+
+## Other observations
+
+- Default behavior favors sounding confident over admitting uncertainty; a habit, not a hard limit
+- One-time correction and strong native instincts land in similar range; neither fully closes the gap alone
+- Vague instructions ("verify this") don't stick, models need a concrete definition of what "verified" means
