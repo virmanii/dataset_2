@@ -1,0 +1,62 @@
+# Objective
+Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B) answer the following:
+
+# Task
+A grain trader, in the year 1941, purchases 500 kg of Wheat and 300 kg of Rice at Amritsar, at that year's listed wholesale prices per standard maund. The trader transports both consignments to Kanpur and sells them there at that year's wholesale prices. Assume 1 standard maund equals 37.3242 kg, and ignore transport, storage, and handling costs. What profit or loss, in decimal Rupees, does the trader make, rounded to two decimal places?
+
+# Output Formatting & Constraints
+* Format: Output a strictly valid JSON object inside a markdown code block.
+* Required Keys: Return the JSON using EXACTLY the following four keys:
+  - "Final_Answer" (Number): The profit (positive) or loss (negative) in decimal Rupees, rounded to two decimal places.
+  - "Evidence_Text" (String): A concise synthesis specifying all four extracted prices and their exact source locations, document, page, city, and grain/grade column.
+  - "Derivation" (String): The explicit step-by-step methodology, including the Rs-As-Ps to decimal conversion, the kg-to-maund conversion, and the final profit/loss calculation.
+  - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, PDF_Page_Number]]. The page number MUST be the page's physical position within the PDF file (counting the first page of the file as page 1), NOT any page number printed on the page itself.
+* Data Rigor: Do not invent figures or pull from external parametric knowledge for the prices themselves. No response outside the JSON is valid.
+
+
+{
+  "Final_Answer": 7.62,
+  "Evidence_Text": "Amritsar 1941: Wheat = Rs 3-12-4 per standard maund, Rice (Husked) = Rs 5-15-9 per standard maund. Kanpur 1941: Wheat (Medium Dara) = Rs 4-6-1 per standard maund, Rice (Common) = Rs 5-15-8 per standard maund.",
+  "Derivation": "Step 1, convert Rs-As-Ps to decimal: Amritsar Wheat = 3 + 12/16 + 4/64 = 3.8125; Amritsar Rice = 5 + 15/16 + 9/64 = 6.078125; Kanpur Wheat = 4 + 6/16 + 1/64 = 4.390625; Kanpur Rice = 5 + 15/16 + 8/64 = 6.0625. Step 2, convert kg to maunds: 500 / 37.3242 = 13.395884 maunds of Wheat; 300 / 37.3242 = 8.037530 maunds of Rice. Step 3, total cost at Amritsar = (13.395884 x 3.8125) + (8.037530 x 6.078125) = 99.924920 Rupees. Step 4, total revenue at Kanpur = (13.395884 x 4.390625) + (8.037530 x 6.0625) = 107.543829 Rupees. Step 5, profit = 107.543829 minus 99.924920 = 7.618909, rounded to 7.62.",
+  "Reference": [["CensusAllIndiaPartIB.pdf", 321], ["CensusAllIndiaPartIB.pdf", 322]]
+}
+
+
+{
+  "criterion 1": {
+    "description": "Final answer is exactly 7.62, and correctly signed as a profit, not a loss.",
+    "criterion_type": ["Math"]
+  },
+  "criterion 2": {
+    "description": "Correctly identifies that Wheat and Rice were bought at Amritsar and sold at Kanpur, using each city's own price table rather than mixing them up.",
+    "criterion_type": ["Reasoning"]
+  },
+  "criterion 3": {
+    "description": "Extracts Amritsar 1941 Wheat price as Rs 3-12-4 and Rice price as Rs 5-15-9, from the correct year row, not an adjacent year such as 1940 or 1942.",
+    "criterion_type": ["Extraction (recall)"]
+  },
+  "criterion 4": {
+    "description": "Extracts Kanpur 1941 Wheat price as Rs 4-6-1 and Rice price as Rs 5-15-8, from the correct year row and the correct grade/column for each grain at Kanpur.",
+    "criterion_type": ["Extraction (recall)", "Table Understanding"]
+  },
+  "criterion 5": {
+    "description": "Correctly converts Rs-As-Ps to decimal Rupees using 1 Rupee equals 16 Annas equals 64 Paise, not the modern 100-Paise decimal rupee system.",
+    "criterion_type": ["Reasoning", "Math"]
+  },
+  "criterion 6": {
+    "description": "Correctly converts 500 kg and 300 kg into standard maunds using the given conversion factor, rather than treating maund and kilogram as equivalent.",
+    "criterion_type": ["Reasoning", "Math"]
+  },
+  "criterion 7": {
+    "description": "Computes total cost and total revenue by keeping Wheat and Rice quantities separate and multiplying each by its own correct price, rather than combining quantities or averaging prices.",
+    "criterion_type": ["Reasoning", "Math"]
+  },
+  "criterion 8": {
+    "description": "Does not misapply any footnote symbol from the price table to the specific cells used, since these particular 1941 entries carry no special-pricing marker.",
+    "criterion_type": ["Table Understanding"]
+  },
+  "criterion 9": {
+    "description": "Reference array includes the PDF's physical page number, not the printed page number visible on the scanned page.",
+    "criterion_type": ["Instruction Following"]
+  }
+}
