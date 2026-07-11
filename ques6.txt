@@ -1,53 +1,54 @@
 # Objective
-Using the Census of India 1951 Appendices to the Census Report (Volume I, Part I-B / Madras State Abstract), answer the following.
+Using the Madras Cenus pdf, answer the following.
 
 # Task
-Across all the individual Divisions listed, what is the lowest ratio of Employers (Persons) to Employees (Persons) that any Division gets? Identify that Division and compute its Employers (Persons) divided by its Employees (Persons), rounded to six decimal places.
+What is the combined total of urban male employers and  urban male independent workers, across the subdivisions that correspond to the livelihood class "Transport"?
+
 
 # Output Formatting & Constraints
 * Format: Output a strictly valid JSON object inside a markdown code block.
 * Required Keys: Return the JSON using EXACTLY the following four keys:
-  - "Final_Answer" (Number): The definitive numeric value of the Employers/Employees ratio for the identified Division, strictly rounded to six decimal places.
-  - "Evidence_Text" (String): A concise synthesis specifying the identified Division's name and the exact source locations, document, page, row, and column, for both values retrieved.
-  - "Derivation" (String): The explicit step-by-step methodology used to identify the Division and compute the final result.
+  - "Final_Answer" (Number): The definitive combined total (a whole number) of Male Employers and Male Independent Workers, summed across the qualifying Sub-divisions' Urban rows.
+  - "Evidence_Text" (String): A concise synthesis specifying which Sub-divisions were included (and which were correctly excluded), and the exact source locations, document, page, row, and column, for the values retrieved.
+  - "Derivation" (String): The explicit step-by-step methodology used to identify the qualifying Sub-divisions and compute the final result.
   - "Reference" (Array of Arrays): Formatted precisely as [[Document_Name, PDF_Page_Number]]. The page number MUST be the page's physical position within the PDF file (counting the first page of the file as page 1), NOT any page number printed on the page itself.
 * Data Rigor: Do not invent figures or pull from external parametric knowledge. No other response apart from the suggested JSON is valid.
 
 
 {
-  "Final_Answer": 0.009772,
-  "Evidence_Text": "Comparing Employers (Persons) against Employees (Persons) across all Division-level 'Total' rows, the lowest ratio belongs to Division 8 (Health, education and public administration), with Employers = 2,958 and Employees = 302,709.",
-  "Derivation": "Step 1, for each of the ten major Divisions (0 through 9), take the 'Total' row (excluding Rural/Urban sub-rows and any nested Sub-division rows) and compute Employers (Persons) divided by Employees (Persons). Step 2, the minimum value belongs to Division 8: 2,958 / 302,709 = 0.00977176. Step 3, round to six decimal places: 0.009772.",
-  "Reference": [["42078_1951_CEN.pdf", 33]]
+  "Final_Answer": 30280,
+  "Evidence_Text": "The prose preceding the table states that Sub-divisions 7.0 to 7.4 (transport otherwise unclassified and incidental services, road, water, air, and railway transport) correspond to the 'Transport' livelihood class, while Sub-divisions 7.5 to 7.9 (storage/warehousing, postal, telegraph, telephone, and wireless services) correspond to 'Other services and miscellaneous sources' instead, despite being numbered under Division 7. Summing Male Employers and Male Independent Workers from the Urban row of each qualifying Sub-division (7.0: 24 + 784; 7.1: 3,319 + 21,841; 7.2: 1,376 + 2,654; 7.3: 6 + 0; 7.4: 0 + 276) gives a combined total of 30,280.",
+  "Derivation": "Step 1, read the classification note preceding the table to determine that only Sub-divisions 7.0-7.4 map to the 'Transport' livelihood class, and exclude Sub-divisions 7.5-7.9 which map to 'Other services and miscellaneous sources' instead. Step 2, for each of the five qualifying Sub-divisions, take the Urban row (not Total or Rural) and extract the Male Employers and Male Independent Workers values. Step 3, sum all ten extracted values: (24+784) + (3,319+21,841) + (1,376+2,654) + (6+0) + (0+276) = 808 + 25,160 + 4,030 + 6 + 276 = 30,280.",
+  "Reference": [["MadrasCensus.pdf", 32]]
 }
 
 {
   "criterion 1": {
-    "description": "Final answer is exactly 0.009772.",
+    "description": "Final answer is exactly 30280.",
     "criterion_type": ["Math"]
   },
   "criterion 2": {
-    "description": "Correctly identifies Division 8 (Health, education and public administration) as the Division with the lowest Employers/Employees ratio.",
-    "criterion_type": ["Table Understanding", "Reasoning"]
+    "description": "Correctly identifies, from the prose preceding the table, that only Sub-divisions 7.0 to 7.4 belong to the 'Transport' livelihood class, and correctly excludes Sub-divisions 7.5 to 7.9 (storage and warehousing, postal, telegraph, telephone, and wireless services), which are numbered under Division 7 but belong to 'Other services and miscellaneous sources' instead.",
+    "criterion_type": ["Reasoning", "Table Understanding", "Instruction Following"]
   },
   "criterion 3": {
-    "description": "Distinguishes Division-level Total rows from their Rural/Urban sub-rows and from nested Sub-division rows in the table's hierarchy, comparing only across the ten major Divisions rather than including Rural/Urban splits or finer sub-divisions.",
-    "criterion_type": ["Table Understanding", "Reasoning"]
+    "description": "Uses the Urban row specifically (not the Total or Rural row) for each of the five qualifying Sub-divisions.",
+    "criterion_type": ["Table Understanding"]
   },
   "criterion 4": {
-    "description": "Extracts the correct Employers (Persons) value (2,958) and Employees (Persons) value (302,709) specifically from Division 8's own Total row, not from a Rural/Urban row or a different Division.",
+    "description": "Extracts the Male Employers value and the Male Independent Workers value (not Persons or Females, and not Employees) for each of the five qualifying Sub-divisions' Urban rows.",
     "criterion_type": ["Extraction (recall)"]
   },
   "criterion 5": {
-    "description": "Computes the ratio as Employers divided by Employees, not the inverted ratio (Employees divided by Employers).",
-    "criterion_type": ["Reasoning", "Math"]
+    "description": "Sums exactly the ten correct values (five Sub-divisions x two columns) rather than omitting a Sub-division, including an excluded Sub-division (7.5-7.9), or double-counting a Division-level Total in addition to its Sub-divisions.",
+    "criterion_type": ["Math", "Reasoning"]
   },
   "criterion 6": {
-    "description": "Correctly evaluates all ten Divisions (0-9) rather than stopping early or omitting a Division, so as not to miss the true minimum (e.g. Division 6 has a much higher ratio of ~0.500410 and should not be mistaken for the minimum).",
-    "criterion_type": ["Reasoning", "Instruction Following"]
+    "description": "Does not mistakenly include the Division 7 Total/Sub-total row's Male Employers or Male Independent Workers figures as if they were a Sub-division value.",
+    "criterion_type": ["Table Understanding", "Reasoning"]
   },
   "criterion 7": {
-    "description": "Reference array includes the PDF's physical page number (33), not the page number printed on the scanned page.",
+    "description": "Reference array includes the PDF's physical page number (32), not the page number printed on the scanned page.",
     "criterion_type": ["Instruction Following"]
   }
 }
