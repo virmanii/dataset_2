@@ -1,0 +1,11 @@
+## Directed Instructions
+
+1. Prioritize brevity. Keep optional demographic questions to the ones that clearly inform outreach or accessibility (e.g., age range, experience level); don't add fields just because they're common on forms.
+
+2. Use grid/table format for repeated rating questions instead of stacking them one after another — easier to scan and maps cleanly to Google Forms' grid question type.
+
+3. Order questions so the form feels easy to start. Open with something quick and low-effort (like an overall rating) before asking for contact details or personal information.
+
+4. Give optional questions a brief reason for asking, not just an "(optional)" label, so respondents understand the payoff and are more likely to answer.
+
+5. Keep the scale and structure consistent throughout the form, and make sure every design choice (rating scale, question order, field types) would translate cleanly into a real Google Form without rework.
