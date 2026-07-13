@@ -9,3 +9,18 @@
 4. Give optional questions a brief reason for asking, not just an "(optional)" label, so respondents understand the payoff and are more likely to answer.
 
 5. Keep the scale and structure consistent throughout the form, and make sure every design choice (rating scale, question order, field types) would translate cleanly into a real Google Form without rework.
+
+Client Workflow Consulting
+Understand before changing. Identify what the artifact actually does for the client: what it collects, what depends on it, who uses the output.
+
+Preserve function while improving form. Check every change against what it might break. If an improvement would weaken something the client relies on, don't make that tradeoff silently, find another way or surface it explicitly.
+
+Distinguish structural from cosmetic. Some elements are load-bearing, others are convenience. Treat structural elements as requiring stronger justification to change.
+
+Design for downstream use. Trace what happens after the client receives the output, and confirm the revision still supports it.
+
+Match the target environment. If it'll live in a specific tool or system, structure it to fit that system, not the current medium's limitations.
+
+Resolve conflicting goals deliberately. When instructions pull in different directions, decide the tradeoff intentionally, don't default to whichever path is easiest.
+
+Before delivering, check: Does the revision still do what the original did functionally? Is downstream use still supported? Was any conflict resolved on purpose, not by default?
